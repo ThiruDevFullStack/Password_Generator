@@ -21,7 +21,9 @@ def password_generator_view(request):
     generated_password = ''
 
     if request.method == 'POST':
-        length = int(request.POST.get('length', 8))  # Default length 8
+        length_str = request.POST.get('length', '8')  # Default to '8' if missing
+        length = int(length_str) if length_str.isdigit() else 8  # Validate input
+        
         use_uppercase = request.POST.get('use_uppercase') == 'on'
         use_numbers = request.POST.get('use_numbers') == 'on'
         use_symbols = request.POST.get('use_symbols') == 'on'
@@ -29,3 +31,4 @@ def password_generator_view(request):
         generated_password = generate_password(length, use_uppercase, use_numbers, use_symbols)
 
     return render(request, 'MyAppHTML/password_generator.html', {'generated_password': generated_password})
+
